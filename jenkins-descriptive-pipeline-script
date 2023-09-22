@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+    // options {
+    //     // Timeout counter starts AFTER agent is allocated
+    //     timeout(time: 1, unit: 'SECONDS')
+    // }
+    stages {
+        stage('Pull from Github') {
+            steps {
+                echo 'Hello World'
+                git 'https://github.com/ChaddeKiran/demoRepo.git'
+            }
+        }
+        stage('Build'){
+            steps{
+                sh'docker build -t $JOB_NAME:$BUILD_ID' 
+                sh 'docker tag $JOB_NAME:$BUILD_ID chaddekiran/$JOB_NAME:$BUILD_ID'
+                sh 'docker tag $JOB_NAME:$BUILD_ID chaddekiran/$JOB_NAME:latest'
+            }
+        }
+        
+    }
+}
